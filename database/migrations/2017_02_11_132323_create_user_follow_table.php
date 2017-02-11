@@ -3,7 +3,7 @@
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateMicropostsTable extends Migration
+class CreateUserFollowTable extends Migration
 {
     /**
      * Run the migrations.
@@ -12,14 +12,18 @@ class CreateMicropostsTable extends Migration
      */
     public function up()
     {
-        Schema::create('microposts', function (Blueprint $table) {
+        Schema::create('user_follow', function (Blueprint $table) {
             $table->increments('id');
             $table->integer('user_id')->unsigned()->index();
-            $table->string('content');
+            $table->integer('follow_id')->unsigned()->index();
             $table->timestamps();
-            
-            // 外部キー制約
+
+            // 外部キー設定
             $table->foreign('user_id')->references('id')->on('users');
+            $table->foreign('follow_id')->references('id')->on('users');
+
+            // user_idとfollow_idの組み合わせの重複を許さない
+            $table->unique(['user_id', 'follow_id']);
         });
     }
 
@@ -30,6 +34,6 @@ class CreateMicropostsTable extends Migration
      */
     public function down()
     {
-        Schema::drop('microposts');
+        Schema::drop('user_follow');
     }
 }

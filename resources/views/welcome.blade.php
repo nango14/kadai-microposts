@@ -13,6 +13,9 @@
                 {!! Form::close() !!}
             </aside>
             <div class="col-xs-8">
+                @if (count($microposts) > 0)
+                    @include('microposts.microposts', ['microposts' => $microposts])
+                @endif
             </div>
         </div>
     @else
