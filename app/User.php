@@ -52,7 +52,6 @@ class User extends Model implements AuthenticatableContract,
         return $this->belongsToMany(User::class, 'user_follow', 'follow_id', 'user_id')->withTimestamps();
     }
 
-
     public function follow($userId)
     {
         // 既にフォローしているかの確認
@@ -96,5 +95,44 @@ class User extends Model implements AuthenticatableContract,
         $follow_user_ids = $this->followings()->lists('users.id')->toArray();
         $follow_user_ids[] = $this->id;
         return Micropost::whereIn('user_id', $follow_user_ids);
+    }
+
+    public function bookmarkings()
+    {
+        return $this->belongsToMany(Micropost::class, 'favorites', 'user_id', 'micropost_id')->withTimestamps();
+    }
+    
+    public function bookmark($micropostId)
+    {
+        // 既にフォローしているかの確認
+        $exist = $this->is_bookmarking($micropostId);
+
+        if ($exist) {
+            // 既にフォローしていれば何もしない
+            return false;
+        } else {
+            // 未フォローであればフォローする
+            $this->bookmarkings()->attach($micropostId);
+            return true;
+        }
+    }
+    
+    public function unbookmark($micropostId)
+    {
+        // 既にフォローしているかの確認
+        $exist = $this->is_bookmarking($micropostId);
+
+        if ($exist) {
+            // 既にフォローしていればフォローを外す
+            $this->bookmarkings()->detach($micropostId);
+            return true;
+        } else {
+            // 未フォローであれば何もしない
+            return false;
+        }
+    }
+    
+    public function is_bookmarking($micropostId) {
+        return $this->bookmarkings()->where('micropost_id', $micropostId)->exists();
     }
 }

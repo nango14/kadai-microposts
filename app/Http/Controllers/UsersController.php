@@ -66,4 +66,22 @@ class UsersController extends Controller
         
         return view('users.followers', $data);
     }
+    
+    public function bookmarkings($id)
+    {
+        $user = User::find($id);
+        $bookmarkings = $user->bookmarkings()->paginate(10);
+//var_dump($bookmarkings);
+//exit;
+//var_dump($user);
+//exit;
+        $data = [
+            'user' => $user,
+            'bookmarkings' => $bookmarkings,
+        ];
+        
+        //$data += $this->counts($user);
+        $data += $this->counts($user);
+        return view('users.bookmarkings', $data);
+    }
 }

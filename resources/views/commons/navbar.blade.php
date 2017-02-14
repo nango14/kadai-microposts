@@ -21,8 +21,9 @@
                                 <li role="separator" class="divider"></li>
                                 <li>{!! link_to_route('logout.get', 'Logout') !!}</li>
                             </ul>
-                            
                         </li>
+                        <li><a href="{{ route('users.bookmarkings', ['id' => $user->id]) }}">Bookmarks</a></li>
+
                     @else
                         <li>{!! link_to_route('signup.get', 'Signup') !!}</li>
                         <li>{!! link_to_route('login.get', 'Login') !!}</li>
