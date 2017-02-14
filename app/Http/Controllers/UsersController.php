@@ -15,9 +15,11 @@ class UsersController extends Controller
     {
         //$users = User::all();
         $users = User::paginate(10);
+        $authuser = \Auth::user();
 
         return view('users.index',[
                 'users' => $users,
+                'authuser' => $authuser,
         ]);
     }
 
