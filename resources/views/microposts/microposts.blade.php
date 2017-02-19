@@ -20,7 +20,6 @@
                 @endif
             </div>
             <div>
-                @if (Auth::user()->id != $micropost->user_id)
                 @if (Auth::user()->is_bookmarking($micropost->id))
                     {!! Form::open(['route' => ['user.unbookmark', $micropost->id], 'method' => 'delete']) !!}
                         {!! Form::submit('Unbookmark', ['class' => "btn btn-danger btn-xs"]) !!}
@@ -29,7 +28,6 @@
                     {!! Form::open(['route' => ['user.bookmark', $micropost->id]]) !!}
                         {!! Form::submit('Bookmark', ['class' => "btn btn-primary btn-xs"]) !!}
                     {!! Form::close() !!}
-                @endif
                 @endif
             </div>
         </div>
